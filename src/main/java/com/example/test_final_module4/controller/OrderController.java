@@ -47,17 +47,15 @@ public class OrderController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateForm(@PathVariable Long id, Model model) {
-        Optional<Orders> orderOptional = orderService.findById(id);
-        List<Product> products = productService.findAll();
-        if (orderOptional.isPresent()) {
-            model.addAttribute("product", products);
-            model.addAttribute("order", orderOptional.get());
+    public String viewUpdate(@PathVariable Long id, Model model) {
+        Optional<Orders> order = orderService.findById(id);
+        if (order.isPresent()) {
+            model.addAttribute("order", order.get());
             return "update";
         } else {
-            model.addAttribute("errorMessage", "Order not found");
-            return "error";
+            return "redirect:/order";
         }
+
     }
 
     @PostMapping("/update/{id}")
@@ -81,6 +79,6 @@ public class OrderController {
             redirectAttributes.addFlashAttribute("errorMessage", "Đã xảy ra lỗi khi cập nhật đơn hàng.");
         }
 
-        return "redirect:/list";
+        return "redirect:/order";
     }
 }
